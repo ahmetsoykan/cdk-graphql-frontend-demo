@@ -11,3 +11,14 @@ export const createNote = /* GraphQL */ `
     }
   }
 `;
+
+export const deleteNote = /* GraphQL */ `
+  mutation deleteNote(
+    $id: String!
+  ) {
+    deleteNote(id: $id) {
+      detail
+      id
+    }
+  }
+`;

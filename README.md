@@ -1,8 +1,24 @@
-# cdk-graphql-frontend-demo
+# app
 
-desc: frontend that connects to appsync api, and makes the actions. to connect this with api, you need to export configs from AppSync Console and then save it as aws-export under the src. 
+## Project setup
+```
+yarn install
+```
 
-# usaful commands
+### Compiles and hot-reloads for development
+```
+yarn serve
+```
 
-* npm install
-* npm run serve
+### Compiles and minifies for production
+```
+yarn build
+```
+
+### Lints and fixes files
+```
+yarn lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
