@@ -1,36 +1,53 @@
 <template>
-    <div>
-      <table class="center">
-        <tr>
-          <th>Age</th>
-          <th>Name</th>
-          <th>Delete</th>
-        </tr>
-        <tr class="center" v-for="item in items" :key="item.id">
-          <td>{{ item.age }}</td>
-          <td>{{ item.first_name }}</td>
-          <td><i class="fa-solid fa-xmark"></i></td>
-        </tr>
-      </table>
-    </div>
+  <div>
+    <table class="center">
+      <tr>
+        <th>Age</th>
+        <th>Name</th>
+        <th>Delete</th>
+      </tr>
+      <tr class="center" v-for="item in this.notes" :key="item.id">
+        <td>{{ item.id }}</td>
+        <td>{{ item.detail }}</td>
+        <td><i v-on:click="deleteNote(item.id)" class="fa-solid fa-xmark"></i></td>
+      </tr>
+    </table>
+  </div>
 </template>
 
+<script>
+import { API } from "aws-amplify";
+import { deleteNote } from "../graphql/mutations";
 
-  <script>
-    export default {
-      name: 'NoteList',
-      data() {
-        return {
-          items: [
-            { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-            { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-            { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-            { age: 38, first_name: 'Jami', last_name: 'Carney' }
-          ]
-        }
-      }
-    }
-  </script>
+
+export default {
+  name: "NoteList",
+  props: {
+    notes: [Array, Object],
+  },
+  data() {
+    return {
+    };
+  },
+  methods: {
+    async deleteNote(id) {
+      //const vari = { id };
+      //console.log(vari.id)
+      await API.graphql({
+        query: deleteNote,
+        variables: {id},
+      });
+      this.$parent.getNotes();
+    },
+    // async getNotes() {
+    //   const notes = await API.graphql({
+    //     query: getNotes,
+    //   });
+    //   this.notes = notes.data.getNotes.items;
+    // },
+  },
+};
+</script>
 <style scoped>
 table {
   border-collapse: collapse;
@@ -38,7 +55,9 @@ table {
   margin: auto;
 }
 
-td, th, i {
+td,
+th,
+i {
   text-align: center;
   padding: 8px;
 }

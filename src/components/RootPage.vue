@@ -7,35 +7,60 @@
       <a href="https://github.com/ahmetsoykan/cdk-graphql-backend-demo" target="_blank" rel="noopener">here</a>.
     </p>
     <div class="border-lighter flex items-center">
-      <input v-model="text" size=40 placeholder="details" />
-      <input 
-        class="submit" 
-        type="submit" 
-        value="Add This Too"
-      >
-    </div>
+      <input v-model="detail" size=40 placeholder="details" />
+      <input v-on:click="createNote" class="submit" type="submit" value="Add This Too"></div>
     <br>
     <h3>We're storing your notes here:</h3>
     <br>
-    <NoteList/>
+    <NoteList :notes="this.notes"/>
   </div>
 </template>
 
 <script>
-import NoteList from './NoteList.vue'
+import { API } from "aws-amplify";
+import NoteList from './NoteList.vue';
+import { createNote } from "../graphql/mutations";
+import { getNotes } from "../graphql/queries";
 
 export default {
   name: 'RootPage',
+  async created() {
+    this.getNotes();
+  },
   props: {
     msg: String
   },
   components: {
     NoteList
-  }
+  },
+  data() {
+    return {
+      detail: "",
+      notes: [String, Object],
+    };
+  },
+  methods: {
+    async createNote() {
+      const { detail } = this;
+      if (!detail) return;
+      const note = { detail };
+      await API.graphql({
+        query: createNote,
+        variables: { input: note },
+      });
+      this.detail = "";
+      this.getNotes();
+    },
+    async getNotes() {
+      const notes = await API.graphql({
+        query: getNotes,
+      });
+      this.notes = notes.data.getNotes.items;
+    },
+  },
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 h3 {
   margin: 40px 0 0;

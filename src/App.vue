@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <RootPage msg="the Notepad"/>
+    <RootPage msg="the Notepad" />
   </div>
 </template>
 
 <script>
-import RootPage from './components/RootPage.vue'
+import RootPage from "./components/RootPage.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     RootPage,
-  }
-}
+  },
+};
 </script>
 
 <style>
